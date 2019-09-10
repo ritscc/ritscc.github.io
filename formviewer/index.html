@@ -7,11 +7,20 @@
 <script type="text/javascript"><!--
     
     // ▼ここのＵＲＬをＧＡＳで公開した時に得られるものに置換▼
-    var APPURL = "https://script.google.com/macros/s/AKfycbyz35x3jy0PRyj7C4pLHHtFaUgnk7kQNX26oqFbzA5U-XcUVm4K/exec";
-
+    const APPURL = "https://script.google.com/macros/s/AKfycbyz35x3jy0PRyj7C4pLHHtFaUgnk7kQNX26oqFbzA5U-XcUVm4K/exec";
+    const isIOS = /iP(hone|(o|a)d)/.test(navigator.userAgent);
 
     window.onload = function(){
         let token = getParam("token");
+
+		var link = document.createElement('link');
+		if(isIOS) link.href = 'frameForIos.css';  // IOS用CSS
+		else      link.href = 'frameDefault.css'; // デフォルトCSS
+		link.rel  = 'stylesheet';
+		link.type = 'text/css';
+        console.log("load: "+link.href);
+		document.getElementsByTagName('head')[0].appendChild(link);
+        
         if(token){
             document.cookie = "userToken=" + encodeURIComponent(token)   + ";max-age=8640000";
             console.log("login token:" + token);
@@ -45,24 +54,9 @@
     
 
 --></script>
-<style type="text/css"><!--
-    body{
-        margin: 0;
-        padding: 0;
-
-    }
-    iframe{
-        position: fixed;
-        top: 0;
-        bottom: 0;
-        width: 100%;
-        height: 100%;
-        border:0;
-    }
---></style>
 </head>
 <body>
-    <iframe name="_mainFrame" id="_mainFrame"></iframe>
+    <div class="iframeWrapper"><iframe name="_mainFrame" id="_mainFrame"></iframe></div>
     <section id="loaderSec" style="display:flex;">
         <div id="loader">    
           <img src="./logo-w.png" >
